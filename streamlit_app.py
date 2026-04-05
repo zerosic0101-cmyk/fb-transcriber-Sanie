@@ -39,28 +39,32 @@ if st.button("RUN TRANSCRIPTION"):
                 
                 st.write("🧠 Transcribing...")
                 model = whisper.load_model("base")
+                
+                # THE FIX IS HERE:
                 result = model.transcribe("audio.m4a")
-                final_text = result.strip()
+                final_text = str(result.get("text", "")).strip() 
+                
                 status.update(label="Complete!", state="complete", expanded=False)
 
-            st.subheader("Transcript")
-            st.text_area("", value=final_text, height=250, key="transcript_box")
-            
-            # 5. JavaScript Copy Button
-            copy_code = f"""
-            <button onclick="copyToClipboard()" style="width: 100%; background-color: #21262d; color: white; border: 1px solid #30363d; border-radius: 8px; padding: 10px; cursor: pointer; font-family: sans-serif;">
-                📋 Copy Text
-            </button>
-            <script>
-            function copyToClipboard() {{
-                const text = `{final_text}`;
-                navigator.clipboard.writeText(text).then(() => {{
-                    alert("Copied to clipboard!");
-                }});
-            }}
-            </script>
-            """
-            components.html(copy_code, height=50)
+            if final_text:
+                st.subheader("Transcript")
+                st.text_area("", value=final_text, height=250, key="transcript_box")
+                
+                # 5. JavaScript Copy Button
+                copy_code = f"""
+                <button onclick="copyToClipboard()" style="width: 100%; background-color: #21262d; color: white; border: 1px solid #30363d; border-radius: 8px; padding: 10px; cursor: pointer; font-family: sans-serif;">
+                    📋 Copy Text
+                </button>
+                <script>
+                function copyToClipboard() {{
+                    const text = `{final_text.replace('`', "'")}`;
+                    navigator.clipboard.writeText(text).then(() => {{
+                        alert("Copied to clipboard!");
+                    }});
+                }}
+                </script>
+                """
+                components.html(copy_code, height=50)
             
             if os.path.exists("audio.m4a"):
                 os.remove("audio.m4a")
