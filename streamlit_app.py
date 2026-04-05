@@ -41,7 +41,7 @@ if st.button("RUN TRANSCRIPTION"):
                 
                 # Extract text correctly from dictionary
                 final_text = str(result.get("text", "")).strip()
-                status.update(label="Complete!", state="complete", expanded=False)
+                status.update(label="Tapos na ang Pag-gagatas!", state="complete", expanded=False)
 
             if final_text:
                 st.subheader("Transcript")
