@@ -30,12 +30,12 @@ if st.button("RUN TRANSCRIPTION"):
     if url:
         try:
             with st.status("Processing...", expanded=True) as status:
-                st.write("📥 Downloading...")
+                st.write("🐂 Ginagatasan na...")
                 ydl_opts = {'format': 'm4a/bestaudio/best', 'outtmpl': 'audio.m4a', 'quiet': True}
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
                 
-                st.write("🧠 AI Transcribing...")
+                st.write("🧠 Malapit na wait lang...")
                 model = whisper.load_model("base")
                 result = model.transcribe("audio.m4a")
                 
